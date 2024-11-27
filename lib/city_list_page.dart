@@ -32,7 +32,9 @@ class CityListPage extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const CityDetailPage(),
+                  builder: (context) => CityDetailPage(
+                    city: city,
+                  ),
                 ),
               );
             },

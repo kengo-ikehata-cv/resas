@@ -20,7 +20,15 @@ class CityListPage extends StatelessWidget {
             onTap: () {
               //
             },
-            ),
+          ),
+          ListTile(
+            title: const Text('千葉市'),
+            subtitle: const Text('政令指定都市'),
+            trailing: const Icon(Icons.navigate_next),
+            onTap: () {
+              //
+            },
+          ),
         ]
       ),
     );

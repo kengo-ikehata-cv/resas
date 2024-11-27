@@ -10,11 +10,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Flutter RESAS App',
       home: Scaffold(
-        body: Center(
-          child: Text('Hello World!')
+        appBar: AppBar(
+          title: const Text('市区町村一覧')
+        ),
+        body: const Center(
+          child: Text('市区町村の一覧画面です')
         ),
       ),
     );

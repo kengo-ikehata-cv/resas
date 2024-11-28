@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/city_detail_page.dart';
+import 'env.dart';
+import 'package:http/http.dart' as http;
 
-class CityListPage extends StatelessWidget {
+class CityListPage extends StatefulWidget {
   const CityListPage({
     super.key,
   });
+
+  @override
+  State<CityListPage> createState() => _CityListPageState();
+}
+
+class _CityListPageState extends State<CityListPage> {
+  late Future<void> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    const host = 'opendata.resas-portal.go.jp';
+    const endpoint = '/api/v1/cities';
+    final headers = {'X-API-KEY': Env.resasApiKey};
+    final response = http
+        .get(Uri.https(host, endpoint), headers: headers)
+        .then((res) => res.body);
+    //print(response);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +45,7 @@ class CityListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('市区町村一覧')),
       body: FutureBuilder<void>(
-          future: Future.delayed(const Duration(seconds: 3)),
+          future: _future,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

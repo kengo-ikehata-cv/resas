@@ -59,7 +59,8 @@ class _CityDetailPageState extends State<CityDetailPage> {
               final item = items[index];
               return ListTile(
                 title: Text(item['year'].toString()),
-                trailing: Text(item['value'].toString(),
+                trailing: Text(
+                  '${(item['value'] as int) * 1000}円',
                 style: Theme.of(context).textTheme.bodyLarge,
                 ),
               );

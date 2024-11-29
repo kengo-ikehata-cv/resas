@@ -3,6 +3,7 @@ import 'package:myapp/city_detail_page.dart';
 import 'env.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'city.dart';
 
 class CityListPage extends StatefulWidget {
   const CityListPage({
@@ -29,18 +30,6 @@ class _CityListPageState extends State<CityListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final cities = [
-    //   '札幌市',
-    //   '仙台市',
-    //   'さいたま市',
-    //   '千葉市',
-    //   '横浜市',
-    //   '川崎市',
-    //   '相模原市',
-    //   '新潟市',
-    //   '静岡市',
-    //   '浜松市',
-    // ];
 
     return Scaffold(
       appBar: AppBar(title: const Text('市区町村一覧')),
@@ -54,19 +43,20 @@ class _CityListPageState extends State<CityListPage> {
             }
             final json = jsonDecode(snapshot.data!)['result'] as List;
             final items = json.cast<Map<String, dynamic>>();
+            final cities = items.map((item) => City.fromJson(item)).toList();
             return ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {
-                final city = items[index];
+                final city = cities[index];
                 return ListTile(
-                  title: Text(city['cityName']),
-                  subtitle: const Text('政令指定都市'),
+                  title: Text(city.cityName),
+                  subtitle: Text(city.bigCityFlag),
                   trailing: const Icon(Icons.navigate_next),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => CityDetailPage(
-                          city: city['cityName'],
+                          city: city.cityName,
                         ),
                       ),
                     );

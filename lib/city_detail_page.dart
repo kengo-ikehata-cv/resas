@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'env.dart';
 import 'dart:convert';
 import 'package:myapp/city.dart';
@@ -58,10 +59,10 @@ class _CityDetailPageState extends State<CityDetailPage> {
             itemBuilder: (context, index) {
               final item = items[index];
               return ListTile(
-                title: Text(item['year'].toString()),
+                title: Text('${item['year']}年'),
                 trailing: Text(
-                  '${(item['value'] as int) * 1000}円',
-                style: Theme.of(context).textTheme.bodyLarge,
+                  _formatTaxLabel(item['value'] as int),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               );
             },
@@ -69,5 +70,11 @@ class _CityDetailPageState extends State<CityDetailPage> {
         },
       ),
     );
+  }
+
+  // 千円単位の税金を表示するためのフォーマットを行います
+  String _formatTaxLabel(int value) {
+    final formatted = NumberFormat('#,###').format(value * 1000);
+    return '$formatted円';
   }
 }

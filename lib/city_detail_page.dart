@@ -44,33 +44,49 @@ class _CityDetailPageState extends State<CityDetailPage> {
       appBar: AppBar(
         title: Text(widget.city.cityName),
       ),
-      body: FutureBuilder<String>(
-        future: _future,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          final result =
-              jsonDecode(snapshot.data!)['result'] as Map<String, dynamic>;
-          final data = result['data'] as List;
-          final items = data.cast<Map<String, dynamic>>();
-          final taxes = items.map(AnnualMunicipalityTax.fromJson).toList();
-
-          return ListView.separated(
-            itemCount: taxes.length,
-            separatorBuilder: (context, index) => const Divider(),
-            itemBuilder: (context, index) {
-              final tax = taxes[index];
-              return ListTile(
-                title: Text('${tax.year}年'),
-                trailing: Text(
-                  _formatTaxLabel(tax.value),
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              );
-            },
-          );
-        },
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            color: Colors.amberAccent,
+            child: const Padding(padding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            child: Text('一人当たりの地方税')
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<String>(
+              future: _future,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final result =
+                    jsonDecode(snapshot.data!)['result'] as Map<String, dynamic>;
+                final data = result['data'] as List;
+                final items = data.cast<Map<String, dynamic>>();
+                final taxes = items.map(AnnualMunicipalityTax.fromJson).toList().reversed.toList();
+            
+                return ListView.separated(
+                  itemCount: taxes.length,
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemBuilder: (context, index) {
+                    final tax = taxes[index];
+                    return ListTile(
+                      title: Text('${tax.year}年'),
+                      trailing: Text(
+                        _formatTaxLabel(tax.value),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

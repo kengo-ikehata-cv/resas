@@ -1,5 +1,3 @@
-import 'package:myapp/city_type.dart';
-
 class AnnualMunicipalityTax {
   final int year;
   final int value;

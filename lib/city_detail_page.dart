@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'env.dart';
+import 'dart:convert';
 
 class CityDetailPage extends StatefulWidget {
   const CityDetailPage({
@@ -43,9 +44,22 @@ class _CityDetailPageState extends State<CityDetailPage> {
       body: FutureBuilder<String>(
         future: _future,
         builder: (context, snapshot) {
-          print(snapshot.data);
-          return Center(
-            child: Text('${widget.city}の詳細画面です'),
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final result =
+              jsonDecode(snapshot.data!)['result'] as Map<String, dynamic>;
+          final data = result['data'] as List;
+          final items = data.cast<Map<String, dynamic>>();
+          return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              return ListTile(
+                title: Text(item['year'].toString()),
+                trailing: Text(item['value'].toString()),
+              );
+            },
           );
         },
       ),
